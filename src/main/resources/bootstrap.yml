@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: openwms-gateway
+
+server:
+  port: ${PORT:8095}
+
+security:
+  user:
+    password: sa
+  basic:
+    enabled: false
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: ${vcap.services.eureka-service.credentials.uri:http://127.0.0.1:8761}/eureka/
