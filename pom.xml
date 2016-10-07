@@ -33,11 +33,11 @@
     </parent>
     <artifactId>org.openwms.gateway</artifactId>
     <version>1.0.0-SNAPSHOT</version>
-    <name>OpenWMS.org API Gateway</name>
+    <name>OpenWMS.org Cloud: API Gateway</name>
 
     <properties>
-        <spring-boot.version>1.4.0.RELEASE</spring-boot.version>
-        <spring-cloud-dependencies.version>Brixton.SR5</spring-cloud-dependencies.version>
+        <spring-boot.version>1.4.1.RELEASE</spring-boot.version>
+        <spring-cloud-dependencies.version>Brixton.SR6</spring-cloud-dependencies.version>
     </properties>
 
 
@@ -55,20 +55,49 @@
         <site>
             <id>${distribution.serverId}</id>
             <name>OpenWMS.org WebSite</name>
-            <url>${distribution.serverProtocol}://${distribution.serverUrl.sourcePath}/org.openwms.tms</url>
+            <url>${distribution.serverProtocol}://${distribution.serverUrl.sourcePath}/org.openwms.cloud</url>
         </site>
     </distributionManagement>
 
     <scm>
-        <url>https://github.com/spring-labs/org.openwms.configuration</url>
-        <connection>scm:git:git://github.com/spring-labs/org.openwms.configuration.git</connection>
-        <developerConnection>scm:git:git@github.com:spring-labs/org.openwms.configuration.git</developerConnection>
+        <url>https://github.com/spring-labs/org.openwms.gateway</url>
+        <connection>scm:git:git://github.com/spring-labs/org.openwms.gateway.git</connection>
+        <developerConnection>scm:git:git@github.com:spring-labs/org.openwms.gateway.git</developerConnection>
     </scm>
 
     <dependencies>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-config-server</artifactId>
+            <artifactId>spring-cloud-starter-zuul</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-eureka</artifactId>
+            <exclusions>
+                <exclusion>
+                    <!-- bites with spring-core -->
+                    <groupId>commons-logging</groupId>
+                    <artifactId>commons-logging</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-feign</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-hystrix</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.apache.commons</groupId>
+                    <artifactId>commons-lang3</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-ribbon</artifactId>
         </dependency>
     </dependencies>
 
@@ -100,55 +129,6 @@
                 <enabled>true</enabled>
             </snapshots>
         </repository>
-        <repository>
-            <id>spring-milestones</id>
-            <name>Spring Milestones</name>
-            <url>https://repo.spring.io/milestone</url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-        <repository>
-            <id>spring-snapshots</id>
-            <name>Spring Snapshots</name>
-            <url>https://repo.spring.io/snapshot</url>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
-        <repository>
-            <id>bintray</id>
-            <name>Bintray Openwms</name>
-            <url>https://dl.bintray.com/openwms/github</url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
     </repositories>
-
-    <pluginRepositories>
-        <pluginRepository>
-            <id>central</id>
-            <name>Maven Plugin Repository</name>
-            <url>http://repo.maven.apache.org/maven2</url>
-        </pluginRepository>
-        <pluginRepository>
-            <id>typescript-maven-plugin</id>
-            <url>https://raw.github.com/ppedregal/typescript-maven-plugin/master/repo</url>
-        </pluginRepository>
-        <pluginRepository>
-            <id>spring-snapshots</id>
-            <name>Spring Snapshots</name>
-            <url>https://repo.spring.io/snapshot</url>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </pluginRepository>
-        <pluginRepository>
-            <id>bintray</id>
-            <name>Bintray Openwms</name>
-            <url>https://dl.bintray.com/openwms/github</url>
-        </pluginRepository>
-    </pluginRepositories>
 
 </project>
