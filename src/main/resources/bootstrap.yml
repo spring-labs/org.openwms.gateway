@@ -1,17 +1,52 @@
 spring:
   application:
-    name: openwms-gateway
+    name: openwms-api
+  main:
+      banner-mode: OFF
+  config:
+    name: globals
+  cloud:
+    config:
+      label: ${owms.tenant:master}
+      fail-fast: true
+      discovery:
+        enabled: true
+        service-id: openwms-config
+
+owms:
+  eureka:
+    # Override this in cloud environment!
+    url: http://user:sa@localhost:8761
 
 server:
-  port: ${PORT:8095}
+  port: ${PORT:8086}
 
 security:
   user:
+    # Override this in cloud environment!
     password: sa
-  basic:
-    enabled: false
 
 eureka:
   client:
     serviceUrl:
-      defaultZone: ${vcap.services.eureka-service.credentials.uri:http://127.0.0.1:8761}/eureka/
+      defaultZone: ${owms.eureka.url}/eureka
+  instance:
+    metadata-map:
+      username: user
+      password: ${security.user.password}
+      protocol: http
+
+---
+spring:
+  profiles: CLOUD
+
+eureka:
+  instance:
+    hostname: openwms-api.herokuapp.com
+    secure-port-enabled: true
+    non-secure-port-enabled: false
+    statusPageUrl: https://${eureka.instance.hostName}/info
+    healthCheckUrl: https://${eureka.instance.hostName}/health
+    homePageUrl: https://${eureka.instance.hostName}/
+    metadata-map:
+      protocol: https
