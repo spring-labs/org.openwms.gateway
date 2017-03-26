@@ -1,3 +1,11 @@
-spring:
-  main:
-    banner-mode: "off"
+zuul:
+  ignoredServices: '*'
+  stripPrefix: false
+  routes:
+    core-uaa:
+      path: /users/**
+      stripPrefix: false
+    core-uaa:
+      path: /roles/**
+    core-uaa:
+      path: /auth/**
