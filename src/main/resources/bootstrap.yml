@@ -1,6 +1,6 @@
 spring:
   application:
-    name: openwms-api
+    name: openwms-edge
   main:
     banner-mode: "OFF"
   config:
@@ -12,6 +12,10 @@ spring:
       discovery:
         enabled: true
         service-id: openwms-config
+
+logging:
+  level:
+    org.springframework.cloud.netflix: DEBUG
 
 owms:
   eureka:
@@ -35,6 +39,17 @@ eureka:
       username: user
       password: ${security.user.password}
       protocol: http
+
+zuul:
+  ignoredServices: '*'
+  stripPrefix: false
+  routes:
+    core-uaa:
+      path: /users/**
+      stripPrefix: false
+    tms-service:
+      path: /v1/transportorders/**
+      stripPrefix: false
 
 ---
 spring:
