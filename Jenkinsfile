@@ -13,6 +13,15 @@ node {
             sh "'${mvnHome}/bin/mvn' -s $MAVEN_SETTINGS clean deploy ${cmdLine} -Psonatype -U"
       }
     }
+    stage('\u27A1 Heroku Staging') {
+      sh '''
+          if git remote | grep heroku > /dev/null; then
+             git remote rm heroku
+          fi
+          git remote add heroku https://:${DGMXCH_HEROKU_API_KEY}@git.heroku.com/openwms-api.git
+          git push heroku master -f
+      '''
+    }
     stage('\u27A1 Results') {
       archive 'target/*.jar'
     }
