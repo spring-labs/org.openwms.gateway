@@ -59,11 +59,11 @@ spring:
 
 eureka:
   instance:
-    hostname: openwms-api.herokuapp.com
+    hostname: ${OWMS_API_URL:openwms-api.herokuapp.com}
     secure-port-enabled: true
     non-secure-port-enabled: false
-    statusPageUrl: https://${eureka.instance.hostName}/info
-    healthCheckUrl: https://${eureka.instance.hostName}/health
-    homePageUrl: https://${eureka.instance.hostName}/
+    statusPageUrl: ${OWMS_API_PROTOCOL:https}://${eureka.instance.hostName}/info
+    healthCheckUrl: ${OWMS_API_PROTOCOL:https}://${eureka.instance.hostName}/health
+    homePageUrl: ${OWMS_API_PROTOCOL:https}://${eureka.instance.hostName}/
     metadata-map:
       protocol: https
