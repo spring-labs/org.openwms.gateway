@@ -7,7 +7,7 @@ spring:
     name: globals
   cloud:
     config:
-      label: ${owms.tenant:master}
+      label: ${owms.tenant}
       fail-fast: true
       discovery:
         enabled: true
@@ -15,12 +15,16 @@ spring:
 
 logging:
   level:
-    org.springframework.cloud.netflix: DEBUG
+    org.springframework.cloud.netflix: OFF
 
 owms:
+  srv:
+    protocol: http
+    hostname: localhost
   eureka:
     # Override this in cloud environment!
     url: http://user:sa@localhost:8761
+  tenant: master
 
 server:
   port: ${PORT:8086}
@@ -38,9 +42,9 @@ eureka:
       enabled: true
   instance:
     metadata-map:
-      username: user
+      username: ${security.user.name}
       password: ${security.user.password}
-      protocol: http
+      protocol: ${owms.srv.protocol}
 
 zuul:
   ignoredServices: '*'
@@ -57,13 +61,20 @@ zuul:
 spring:
   profiles: CLOUD
 
+owms:
+  srv:
+    protocol: https
+    hostname: openwms-api.herokuapp.com
+  eureka:
+    # Override this in cloud environment!
+    url: http://user:sa@localhost:8761
+  tenant: master
+
 eureka:
   instance:
-    hostname: ${OWMS_API_URL:openwms-api.herokuapp.com}
+    hostname: ${owms.srv.hostname}
     secure-port-enabled: true
     non-secure-port-enabled: false
-    statusPageUrl: ${OWMS_API_PROTOCOL:https}://${eureka.instance.hostName}/info
-    healthCheckUrl: ${OWMS_API_PROTOCOL:https}://${eureka.instance.hostName}/health
-    homePageUrl: ${OWMS_API_PROTOCOL:https}://${eureka.instance.hostName}/
-    metadata-map:
-      protocol: https
+    statusPageUrl: ${owms.srv.protocol}://${eureka.instance.hostName}/info
+    healthCheckUrl: ${owms.srv.protocol}://${eureka.instance.hostName}/health
+    homePageUrl: ${owms.srv.protocol}://${eureka.instance.hostName}/
