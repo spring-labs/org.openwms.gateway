@@ -48,11 +48,17 @@ zuul:
   ignoredServices: '*'
   stripPrefix: false
   routes:
+    openwms-services:
+      path: /eureka/**
+      stripPrefix: false
     core-uaa:
       path: /users/**
       stripPrefix: false
     tms-service:
       path: /v1/transportorders/**
+      stripPrefix: false
+    routing-service:
+      path: /routes/**
       stripPrefix: false
 
 ---
