@@ -23,11 +23,10 @@ package org.openwms.gateway;
 
 import org.ameba.annotation.EnableAspects;
 import org.ameba.app.SolutionApp;
-import org.ameba.http.EnableMultiTenancy;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
-import org.springframework.cloud.netflix.zuul.EnableZuulServer;
+import org.springframework.cloud.netflix.zuul.EnableZuulProxy;
 
 /**
  * A ApiGatewayRunner.
@@ -35,7 +34,7 @@ import org.springframework.cloud.netflix.zuul.EnableZuulServer;
  * @author <a href="mailto:scherrer@openwms.org">Heiko Scherrer</a>
  */
 @SpringBootApplication(scanBasePackageClasses = SolutionApp.class, scanBasePackages = "org.openwms")
-@EnableZuulServer
+@EnableZuulProxy
 @EnableAspects(propagateRootCause = true)
 @EnableDiscoveryClient
 public class ApiGatewayRunner {

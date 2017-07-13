@@ -45,8 +45,7 @@ eureka:
       protocol: ${owms.srv.protocol}
 
 zuul:
-#  ignoredServices: '*'
-  stripPrefix: true
+  ignoredServices: '*'
   routes:
     openwms-services:
       path: /eureka/**
