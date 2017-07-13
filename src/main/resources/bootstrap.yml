@@ -45,21 +45,21 @@ eureka:
       protocol: ${owms.srv.protocol}
 
 zuul:
-  ignoredServices: '*'
-  stripPrefix: false
+#  ignoredServices: '*'
+  stripPrefix: true
   routes:
     openwms-services:
       path: /eureka/**
-      stripPrefix: false
+      stripPrefix: true
     core-uaa:
       path: /users/**
-      stripPrefix: false
+      stripPrefix: true
     tms-service:
       path: /v1/transportorders/**
-      stripPrefix: false
+      stripPrefix: true
     routing-service:
       path: /routes/**
-      stripPrefix: false
+      stripPrefix: true
 
 ---
 spring:
