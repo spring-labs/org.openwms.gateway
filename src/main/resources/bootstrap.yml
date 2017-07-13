@@ -1,8 +1,6 @@
 spring:
   application:
     name: openwms-edge
-  main:
-    banner-mode: "OFF"
   config:
     name: globals
   cloud:
@@ -60,21 +58,19 @@ zuul:
 ---
 spring:
   profiles: CLOUD
+  main:
+    banner-mode: "OFF"
 
 owms:
   srv:
     protocol: https
     hostname: openwms-api.herokuapp.com
-  eureka:
-    # Override this in cloud environment!
-    url: http://user:sa@localhost:8761
-  tenant: master
 
 eureka:
   instance:
     hostname: ${owms.srv.hostname}
     secure-port-enabled: true
     non-secure-port-enabled: false
-    statusPageUrl: ${owms.srv.protocol}://${eureka.instance.hostName}/info
-    healthCheckUrl: ${owms.srv.protocol}://${eureka.instance.hostName}/health
-    homePageUrl: ${owms.srv.protocol}://${eureka.instance.hostName}/
+    statusPageUrl: ${owms.srv.protocol}://${owms.srv.hostname}/info
+    healthCheckUrl: ${owms.srv.protocol}://${owms.srv.hostname}/health
+    homePageUrl: ${owms.srv.protocol}://${owms.srv.hostname}/
