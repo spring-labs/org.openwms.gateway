@@ -1,3 +1,31 @@
 language: java
+
+dist: trusty
+
 jdk:
-- openjdk8
+- openjdk11
+
+env:
+  - MAVEN_OPTS=-Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
+
+cache:
+  directories:
+    - .autoconf
+    - $TRAVIS_HOME/.m2
+
+services:
+- docker
+
+install: true
+
+script:
+  - mvn package -Dci.buildNumber=$TRAVIS_BUILD_NUMBER -U
+
+after_success:
+- docker build -t interface21/openwms-gateway:latest .
+
+deploy:
+  provider: script
+  script: bash docker_push
+  on:
+    branch: master
