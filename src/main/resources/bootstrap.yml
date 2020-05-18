@@ -1,70 +1,65 @@
 spring:
   application:
     name: openwms-edge
-  config:
-    name: globals
   cloud:
     config:
-      label: ${owms.tenant}
-      fail-fast: true
       discovery:
         enabled: true
         service-id: openwms-config
+      enabled: true
+      fail-fast: true # true means retry
+      retry:
+        max-attempts: 120
+    discovery:
+      enabled: true
+  config:
+    location: classpath:application.yml
+  security:
+    user:
+      password: sa
+      name: user
 
 logging:
   level:
     org.springframework.cloud.netflix: OFF
 
 owms:
+  eureka:
+    url: http://user:sa@localhost:8761
+    zone: ${owms.eureka.url}/eureka/
   srv:
     protocol: http
     hostname: localhost
-  eureka:
-    # Override this in cloud environment!
-    url: http://user:sa@localhost:8761
   tenant: master
 
 server:
   port: ${PORT:8086}
 
-security:
-  user:
-    # Override this in cloud environment!
-    password: sa
-
 eureka:
   client:
-    serviceUrl:
-      defaultZone: ${owms.eureka.url}/eureka
-    healthcheck:
-      enabled: true
+    instance-info-replication-interval-seconds: 10 # default is 30
+    service-url:
+      defaultZone: ${owms.eureka.zone}  # Must be camelCase
   instance:
+    hostname: ${owms.srv.hostname}
+    secure-port-enabled: false
+    non-secure-port-enabled: true
     metadata-map:
-      username: ${security.user.name}
-      password: ${security.user.password}
+      username: ${spring.security.user.name}
+      password: ${spring.security.user.password}
       protocol: ${owms.srv.protocol}
-
-zuul:
-  ignoredServices: '*'
-  routes:
-    openwms-services:
-      path: /eureka/**
-      stripPrefix: true
-    core-uaa:
-      path: /users/**
-      stripPrefix: true
-    tms-service:
-      path: /v1/transportorders/**
-      stripPrefix: true
-    routing-service:
-      path: /routes/**
-      stripPrefix: true
+      zone: ${owms.eureka.zone}
 
 ---
 spring:
-  profiles: CLOUD
+  profiles: HEROKU
   main:
     banner-mode: "OFF"
+  cloud:
+    config:
+      discovery:
+        enabled: true
+      enabled: true
 
 owms:
   srv:
@@ -73,9 +68,8 @@ owms:
 
 eureka:
   instance:
-    hostname: ${owms.srv.hostname}
     secure-port-enabled: true
     non-secure-port-enabled: false
-    statusPageUrl: ${owms.srv.protocol}://${owms.srv.hostname}/info
-    healthCheckUrl: ${owms.srv.protocol}://${owms.srv.hostname}/health
-    homePageUrl: ${owms.srv.protocol}://${owms.srv.hostname}/
+    statusPageUrl: ${owms.srv.protocol}://${owms.srv.hostname}:${server.port}/actuator/info
+    healthCheckUrl: ${owms.srv.protocol}://${owms.srv.hostname}:${server.port}/actuator/health
+    homePageUrl: ${owms.srv.protocol}://${owms.srv.hostname}:${server.port}/actuator/

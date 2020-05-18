@@ -2,4 +2,45 @@ eureka:
   client:
     healthcheck:
       enabled: true
+    instance-info-replication-interval-seconds: 10 # default is 30
 
+spring:
+  cloud:
+    gateway:
+      globalcors:
+        add-to-simple-url-handler-mapping: true
+        corsConfigurations:
+          '[/**]':
+            allowedOrigin: "*"
+            allowedOrigins: "*"
+            allowedMethods: "*"
+            allowedHeaders: "*"
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+      routes:
+        - id: common-service
+          uri: lb://common-service
+          predicates:
+            - Path=/common/**
+          filters:
+            - StripPrefix=1
+        - id: wms-inventory
+          uri: lb://wms-inventory
+          predicates:
+            - Path=/inventory/**
+          filters:
+            - StripPrefix=1
+        - id: wms-receiving
+          uri: lb://wms-receiving
+          predicates:
+            - Path=/receiving/**
+          filters:
+            - StripPrefix=1
+        - id: bifteki
+          uri: http://bifteki
+          predicates:
+            - Path=/ui/**
+          filters:
+            - StripPrefix=1
