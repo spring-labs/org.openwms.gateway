@@ -1,5 +1,5 @@
-FROM azul/zulu-openjdk-alpine:11-jre
+FROM adoptopenjdk/openjdk11-openj9:jre-11.0.7_10_openj9-0.20.0-alpine
 VOLUME /tmp
-ARG JAVA_OPTS="-noverify -Xmx200m -Xss512k"
+ARG JAVA_OPTS="-Xshareclasses -Xquickstart -noverify"
 ADD target/openwms-gateway.jar app.jar
 ENTRYPOINT exec java $JAVA_OPTS -jar /app.jar
