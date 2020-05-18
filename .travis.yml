@@ -25,10 +25,10 @@ script:
   - mvn package -Dci.buildNumber=$TRAVIS_BUILD_NUMBER -U
 
 after_success:
-  - docker build -t interface21/openwms-gateway:latest .
+  - ./scripts/docker_build
 
 deploy:
   provider: script
-  script: bash docker_push
+  script: bash scripts/docker_push
   on:
     branch: master
