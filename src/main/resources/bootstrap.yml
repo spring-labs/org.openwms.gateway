@@ -19,10 +19,6 @@ spring:
       password: sa
       name: user
 
-logging:
-  level:
-    org.springframework.cloud.netflix: OFF
-
 owms:
   eureka:
     url: http://user:sa@localhost:8761
@@ -49,6 +45,10 @@ eureka:
       password: ${spring.security.user.password}
       protocol: ${owms.srv.protocol}
       zone: ${owms.eureka.zone}
+logging:
+  file:
+    name: BOOT-Edge-Service.log
+    path: "/tmp/owms"
 
 ---
 spring:
