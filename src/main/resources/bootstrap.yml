@@ -50,6 +50,12 @@ logging:
     name: BOOT-Edge-Service.log
     path: "/tmp/owms"
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "prometheus"
+
 ---
 spring:
   profiles: HEROKU
