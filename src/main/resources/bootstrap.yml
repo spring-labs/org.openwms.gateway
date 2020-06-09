@@ -14,10 +14,6 @@ spring:
       enabled: true
   config:
     location: classpath:application.yml
-  security:
-    user:
-      password: sa
-      name: user
 
 owms:
   eureka:
@@ -79,3 +75,36 @@ eureka:
     statusPageUrl: ${owms.srv.protocol}://${owms.srv.hostname}:${server.port}/actuator/info
     healthCheckUrl: ${owms.srv.protocol}://${owms.srv.hostname}:${server.port}/actuator/health
     homePageUrl: ${owms.srv.protocol}://${owms.srv.hostname}:${server.port}/actuator/
+
+---
+spring:
+  profiles: K8S
+  security:
+    oauth2:
+      client:
+        registration:
+          gateway:
+            provider: uaa
+#            client-id: 5f81569eaae7535dae41
+#            client-secret: 8886009e9f8d6a317fcfc61d436d06b49bf22ec9
+            client-id: gateway
+            client-secret: secret
+            authorization-grant-type: authorization_code
+            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+            scope: gateway
+        provider:
+          uaa:
+            authorization-uri: http://localhost:8110/uaa/oauth/authorize
+            token-uri: http://core-uaa:8110/uaa/oauth/token
+            user-info-uri: http://core-uaa:8110/uaa/userinfo
+            user-name-attribute: sub
+            jwk-set-uri: http://core-uaa:8110/uaa/token_keys
+          github:
+            client:
+              clientId: 5f81569eaae7535dae41
+              clientSecret: 8886009e9f8d6a317fcfc61d436d06b49bf22ec9
+              accessTokenUri: https://github.com/login/oauth/access_token
+              userAuthorizationUri: https://github.com/login/oauth/authorize
+              clientAuthenticationScheme: form
+            resource:
+              userInfoUri: https://api.github.com/user
