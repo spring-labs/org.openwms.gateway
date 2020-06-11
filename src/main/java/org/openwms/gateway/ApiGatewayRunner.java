@@ -21,12 +21,19 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.actuate.autoconfigure.metrics.MeterRegistryCustomizer;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.context.annotation.Bean;
-import org.springframework.http.HttpMethod;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.reactive.CorsConfigurationSource;
 import org.springframework.web.cors.reactive.CorsWebFilter;
 import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
+import org.springframework.web.server.ServerWebExchange;
+import org.springframework.web.server.WebFilterChain;
+import reactor.core.publisher.Mono;
+
+import java.util.Collections;
 
 /**
  * A ApiGatewayRunner.
@@ -43,16 +50,39 @@ public class ApiGatewayRunner {
     }
 
     @Bean
+    public GlobalFilter customGlobalPostFilter() {
+        return (exchange, chain) -> chain.filter(exchange)
+                .then(Mono.just(exchange))
+                .map(serverWebExchange -> {
+                    //adds header to response
+                    serverWebExchange.getResponse().getHeaders().set("Access-Control-Request-Methods", "POST, GET, OPTIONS");
+                    return serverWebExchange;
+                })
+                .then();
+    }
+
+    @Bean
+    @Order(Ordered.HIGHEST_PRECEDENCE)
     public CorsWebFilter corsFilter() {
-        return new CorsWebFilter(corsConfigurationSource());
+        return new CorsWebFilter(corsConfigurationSource()) {
+            @Override
+            public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
+                System.out.println("IN:"+exchange);
+                return super.filter(exchange, chain);
+            }
+        };
     }
 
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        CorsConfiguration config = new CorsConfiguration().applyPermitDefaultValues();
-        config.addAllowedMethod(HttpMethod.PUT);
-        config.addAllowedMethod(HttpMethod.DELETE);
+        CorsConfiguration config = new CorsConfiguration();
+        //config.applyPermitDefaultValues();
+        config.setAllowCredentials(true);
+        config.setAllowedMethods(Collections.singletonList("*"));
+        config.setAllowedHeaders(Collections.singletonList("*"));
+        config.setMaxAge(3600L);
+        config.addAllowedOrigin("*");
         source.registerCorsConfiguration("/**", config);
         return source;
     }
