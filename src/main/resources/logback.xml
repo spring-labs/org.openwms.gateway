@@ -9,21 +9,6 @@
     <property name="MODULE_NAME" value="CORE" />
     <property name="SERVICE_NAME" value="EDGE" />
 
-    <appender name="SYSLOG" class="ch.qos.logback.classic.sift.SiftingAppender">
-        <discriminator>
-            <key>Tenant</key>
-            <defaultValue>BOOT</defaultValue>
-        </discriminator>
-        <sift>
-            <appender name="SYSLOG-${Tenant}" class="ch.qos.logback.classic.net.SyslogAppender">
-                <syslogHost>openwms.mooo.com</syslogHost>
-                <facility>SYSLOG</facility>
-                <port>10514</port>
-                <suffixPattern>${SERVICE_NAME} ${Tenant} ${MODULE_NAME} %d{YYYY-MM-dd HH:mm:ss.SSS} %X{X-RequestID} %-5level [${PID:- }/%tid] - [%-40.40logger{39}]${mdcPattern} : %msg%n</suffixPattern>
-            </appender>
-        </sift>
-    </appender>
-
     <include resource="logback-appenders.xml" />
     <include resource="logback-loggers.xml" />
 
@@ -31,14 +16,12 @@
     <logger name="org.hibernate.SQL" level="OFF" />
     <logger name="org.hibernate.type" level="OFF" />
     <logger name="com.netflix.discovery" level="OFF" />
+    <logger name="org.springframework" level="WARN" />
     <logger name="org.springframework.security" level="WARN" />
-
-    <logger name="org.openwms" level="DEBUG" />
-    <logger name="CORE_INTEGRATION_MESSAGING" level="DEBUG" />
+    <logger name="org.openwms" level="WARN" />
 
     <root level="INFO">
         <appender-ref ref="STDOUT" />
-        <appender-ref ref="SYSLOG" />
     </root>
 
 </configuration>

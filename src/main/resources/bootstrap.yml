@@ -14,7 +14,29 @@ spring:
       enabled: true
   config:
     location: classpath:application.yml
+  autoconfigure:
+    # TODO: remove when fixed https://github.com/spring-projects/spring-security/issues/6314
+    exclude: org.springframework.boot.actuate.autoconfigure.security.reactive.ReactiveManagementWebSecurityAutoConfiguration
   security:
+    oauth2:
+      client:
+        registration:
+          gateway:
+            provider: uaa
+            client-id: gateway
+            client-secret: secret
+            authorization-grant-type: authorization_code
+            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+#            scope: openid,gateway
+            scope: gateway
+        provider:
+          uaa:
+            authorization-uri: http://localhost:8110/uaa/oauth/authorize
+            token-uri: http://localhost:8110/uaa/oauth/token
+            user-info-uri: http://localhost:8110/uaa/oauth/userinfo
+            user-name-attribute: sub
+            preferTokenInfo: true
+            jwk-set-uri: http://localhost:8110/uaa/token_keys
     user:
       password: sa
       name: user
@@ -79,3 +101,25 @@ eureka:
     statusPageUrl: ${owms.srv.protocol}://${owms.srv.hostname}:${server.port}/actuator/info
     healthCheckUrl: ${owms.srv.protocol}://${owms.srv.hostname}:${server.port}/actuator/health
     homePageUrl: ${owms.srv.protocol}://${owms.srv.hostname}:${server.port}/actuator/
+
+---
+spring:
+  profiles: K8S
+  security:
+    oauth2:
+      client:
+        registration:
+          gateway:
+            provider: uaa
+            client-id: gateway
+            client-secret: secret
+            authorization-grant-type: authorization_code
+            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+            scope: gateway
+        provider:
+          uaa:
+            authorization-uri: http://localhost:8110/uaa/oauth/authorize
+            token-uri: http://core-uaa:8110/uaa/oauth/token
+            user-info-uri: http://core-uaa:8110/uaa/userinfo
+            user-name-attribute: sub
+            jwk-set-uri: http://core-uaa:8110/uaa/token_keys
