@@ -43,11 +43,12 @@ public class CORSConfig implements WebFluxConfigurer {
 
     @Bean
     public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
-        http
-                .authorizeExchange()
-                .anyExchange().permitAll()
+        return http
+                .authorizeExchange().anyExchange().authenticated()
                 .and()
-                .httpBasic().and().formLogin();
-        return http.build();
+                .oauth2Login()
+                .and()
+                .csrf().disable()
+                .build();
     }
 }

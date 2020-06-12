@@ -123,12 +123,3 @@ spring:
             user-info-uri: http://core-uaa:8110/uaa/userinfo
             user-name-attribute: sub
             jwk-set-uri: http://core-uaa:8110/uaa/token_keys
-          github:
-            client:
-              clientId: 5f81569eaae7535dae41
-              clientSecret: 8886009e9f8d6a317fcfc61d436d06b49bf22ec9
-              accessTokenUri: https://github.com/login/oauth/access_token
-              userAuthorizationUri: https://github.com/login/oauth/authorize
-              clientAuthenticationScheme: form
-            resource:
-              userInfoUri: https://api.github.com/user

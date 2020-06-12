@@ -54,7 +54,7 @@ public class ApiGatewayRunner {
         return (exchange, chain) -> chain.filter(exchange)
                 .then(Mono.just(exchange))
                 .map(serverWebExchange -> {
-                    //adds header to response
+                    serverWebExchange.getResponse().getHeaders().set("Access-Control-Allow-Origin", "*");
                     serverWebExchange.getResponse().getHeaders().set("Access-Control-Request-Methods", "POST, GET, OPTIONS");
                     return serverWebExchange;
                 })
