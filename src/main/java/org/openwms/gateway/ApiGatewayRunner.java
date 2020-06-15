@@ -67,12 +67,12 @@ public class ApiGatewayRunner {
         return new CorsWebFilter(corsConfigurationSource()) {
             @Override
             public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
-                System.out.println("IN:"+exchange);
                 return super.filter(exchange, chain);
             }
         };
     }
 
+    @Deprecated
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
