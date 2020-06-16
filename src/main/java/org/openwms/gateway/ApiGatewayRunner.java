@@ -23,8 +23,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.context.annotation.Bean;
-import org.springframework.core.Ordered;
-import org.springframework.core.annotation.Order;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.reactive.CorsConfigurationSource;
 import org.springframework.web.cors.reactive.CorsWebFilter;
@@ -61,8 +59,8 @@ public class ApiGatewayRunner {
                 .then();
     }
 
-    @Bean
-    @Order(Ordered.HIGHEST_PRECEDENCE)
+//    @Bean
+//    @Order(Ordered.HIGHEST_PRECEDENCE)
     public CorsWebFilter corsFilter() {
         return new CorsWebFilter(corsConfigurationSource()) {
             @Override
@@ -73,7 +71,7 @@ public class ApiGatewayRunner {
     }
 
     @Deprecated
-    @Bean
+//    @Bean
     CorsConfigurationSource corsConfigurationSource() {
         final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
