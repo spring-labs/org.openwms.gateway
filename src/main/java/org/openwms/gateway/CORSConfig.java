@@ -20,8 +20,12 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.web.server.SecurityWebFilterChain;
+import org.springframework.security.web.server.authentication.logout.RedirectServerLogoutSuccessHandler;
+import org.springframework.security.web.server.authentication.logout.ServerLogoutSuccessHandler;
 import org.springframework.web.reactive.config.CorsRegistry;
 import org.springframework.web.reactive.config.WebFluxConfigurer;
+
+import java.net.URI;
 
 /**
  * A CORSConfig.
@@ -44,11 +48,23 @@ public class CORSConfig implements WebFluxConfigurer {
     @Bean
     public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
         return http
-                .authorizeExchange().anyExchange().authenticated()
+                .authorizeExchange()
+                    .anyExchange().authenticated()
                 .and()
                 .oauth2Login()
                 .and()
-                .csrf().disable()
+                .logout()
+                    .logoutUrl("/logout")
+                    .logoutSuccessHandler(logoutSuccessHandler("/ui/index.html"))
+                .and()
+                .csrf()
+                    .disable()
                 .build();
+    }
+
+    public ServerLogoutSuccessHandler logoutSuccessHandler(String uri) {
+        RedirectServerLogoutSuccessHandler successHandler = new RedirectServerLogoutSuccessHandler();
+        successHandler.setLogoutSuccessUrl(URI.create(uri));
+        return successHandler;
     }
 }
