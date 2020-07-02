@@ -87,6 +87,43 @@ spring:
       discovery:
         enabled: true
       enabled: true
+  security:
+    oauth2:
+      client:
+        provider:
+          uaa:
+            authorization-uri: https://openwms-core-uaa.herokuapp.com/uaa/oauth/authorize
+            token-uri: https://openwms-core-uaa.herokuapp.com/uaa/oauth/token
+            user-info-uri: https://openwms-core-uaa.herokuapp.com/uaa/oauth/userinfo
+            user-name-attribute: sub
+            preferTokenInfo: true
+            jwk-set-uri: https://openwms-core-uaa.herokuapp.com/uaa/token_keys
+
+owms:
+  srv:
+    protocol: https
+    hostname: openwms-api.herokuapp.com
+
+eureka:
+  instance:
+    secure-port-enabled: true
+    non-secure-port-enabled: false
+    statusPageUrl: ${owms.srv.protocol}://${owms.srv.hostname}:${server.port}/actuator/info
+    healthCheckUrl: ${owms.srv.protocol}://${owms.srv.hostname}:${server.port}/actuator/health
+    homePageUrl: ${owms.srv.protocol}://${owms.srv.hostname}:${server.port}/actuator/
+
+---
+spring:
+  profiles: UAA-AAS
+  security:
+    oauth2:
+      client:
+        provider:
+          uaa:
+            authorization-uri: https://openwms-core-uaa.herokuapp.com/uaa/oauth/authorize
+            token-uri: https://openwms-core-uaa.herokuapp.com/uaa/oauth/token
+            user-info-uri: https://openwms-core-uaa.herokuapp.com/uaa/oauth/userinfo
+            jwk-set-uri: https://openwms-core-uaa.herokuapp.com/uaa/token_keys
 
 owms:
   srv:
@@ -117,9 +154,9 @@ spring:
             scope: gateway
         provider:
           uaa:
-            authorization-uri: http://localhost:8110/uaa/oauth/authorize
-            token-uri: http://core-uaa:8110/uaa/oauth/token
-            user-info-uri: http://core-uaa:8110/uaa/oauth/userinfo
+            authorization-uri: https://core-uaa:8110/uaa/oauth/authorize
+            token-uri: https://core-uaa:8110/uaa/oauth/token
+            user-info-uri: https://core-uaa:8110/uaa/oauth/userinfo
             user-name-attribute: sub
             preferTokenInfo: true
-            jwk-set-uri: http://core-uaa:8110/uaa/token_keys
+            jwk-set-uri: https://core-uaa:8110/uaa/token_keys

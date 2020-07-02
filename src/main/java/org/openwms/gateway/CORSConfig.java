@@ -39,7 +39,7 @@ public class CORSConfig implements WebFluxConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedMethods("*")
+                .allowedMethods("POST, GET, DELETE, PUT, PATCH")
                 .allowCredentials(true)
                 .allowedOrigins("*");
     }
@@ -63,6 +63,7 @@ public class CORSConfig implements WebFluxConfigurer {
     }
 
     public ServerLogoutSuccessHandler logoutSuccessHandler(String uri) {
+        //        OidcClientInitiatedServerLogoutSuccessHandler successHandler = new OidcClientInitiatedServerLogoutSuccessHandler();
         RedirectServerLogoutSuccessHandler successHandler = new RedirectServerLogoutSuccessHandler();
         successHandler.setLogoutSuccessUrl(URI.create(uri));
         return successHandler;

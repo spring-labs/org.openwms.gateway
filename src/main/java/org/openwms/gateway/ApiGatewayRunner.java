@@ -23,15 +23,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.context.annotation.Bean;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.reactive.CorsConfigurationSource;
-import org.springframework.web.cors.reactive.CorsWebFilter;
-import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
-import org.springframework.web.server.ServerWebExchange;
-import org.springframework.web.server.WebFilterChain;
 import reactor.core.publisher.Mono;
-
-import java.util.Collections;
 
 /**
  * A ApiGatewayRunner.
@@ -53,36 +45,10 @@ public class ApiGatewayRunner {
                 .then(Mono.just(exchange))
                 .map(serverWebExchange -> {
                     serverWebExchange.getResponse().getHeaders().set("Access-Control-Allow-Origin", "*");
-                    serverWebExchange.getResponse().getHeaders().set("Access-Control-Request-Methods", "POST, GET, OPTIONS");
+                    serverWebExchange.getResponse().getHeaders().set("Access-Control-Request-Methods", "POST, GET, DELETE, PUT, PATCH");
                     return serverWebExchange;
                 })
                 .then();
-    }
-
-//    @Bean
-//    @Order(Ordered.HIGHEST_PRECEDENCE)
-    public CorsWebFilter corsFilter() {
-        return new CorsWebFilter(corsConfigurationSource()) {
-            @Override
-            public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
-                return super.filter(exchange, chain);
-            }
-        };
-    }
-
-    @Deprecated
-//    @Bean
-    CorsConfigurationSource corsConfigurationSource() {
-        final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        CorsConfiguration config = new CorsConfiguration();
-        //config.applyPermitDefaultValues();
-        config.setAllowCredentials(true);
-        config.setAllowedMethods(Collections.singletonList("*"));
-        config.setAllowedHeaders(Collections.singletonList("*"));
-        config.setMaxAge(3600L);
-        config.addAllowedOrigin("*");
-        source.registerCorsConfiguration("/**", config);
-        return source;
     }
 
     /**
