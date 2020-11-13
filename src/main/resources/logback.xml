@@ -16,7 +16,7 @@
     <logger name="org.hibernate.SQL" level="OFF" />
     <logger name="org.hibernate.type" level="OFF" />
     <logger name="com.netflix.discovery" level="OFF" />
-    <logger name="org.springframework" level="DEBUG" />
+    <logger name="org.springframework" level="INFO" />
     <logger name="org.openwms" level="WARN" />
 
     <root level="INFO">

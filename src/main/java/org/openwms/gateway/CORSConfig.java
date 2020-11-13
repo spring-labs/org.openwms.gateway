@@ -44,15 +44,15 @@ public class CORSConfig implements WebFluxConfigurer {
                 .allowedOrigins("*");
     }
 
-
     @Bean
     public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
         return http
                 .authorizeExchange()
-                    .anyExchange().authenticated()
+                .pathMatchers("/actuator/**").permitAll()
+                .anyExchange().authenticated()
                 .and()
-                .oauth2Login()
-                .and()
+                //.oauth2Login().authorizedClientRepository()
+                //.and()
                 .logout()
                     .logoutUrl("/logout")
                     .logoutSuccessHandler(logoutSuccessHandler("/ui/index.html"))

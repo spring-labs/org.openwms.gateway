@@ -15,41 +15,16 @@
  */
 package org.openwms.gateway;
 
-import io.micrometer.core.instrument.MeterRegistry;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.actuate.autoconfigure.metrics.MeterRegistryCustomizer;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
-import org.springframework.cloud.gateway.filter.GlobalFilter;
-import org.springframework.context.annotation.Bean;
-import reactor.core.publisher.Mono;
 
 /**
  * A ApiGatewayRunner.
  *
  * @author Heiko Scherrer
  */
-@SpringBootApplication
-@EnableDiscoveryClient
+@SpringBootApplication()
 public class ApiGatewayRunner {
-
-    @Bean
-    MeterRegistryCustomizer<MeterRegistry> metricsCommonTags(@Value("${spring.application.name}") String applicationName) {
-        return registry -> registry.config().commonTags("application", applicationName);
-    }
-
-    @Bean
-    public GlobalFilter customGlobalPostFilter() {
-        return (exchange, chain) -> chain.filter(exchange)
-                .then(Mono.just(exchange))
-                .map(serverWebExchange -> {
-                    serverWebExchange.getResponse().getHeaders().set("Access-Control-Allow-Origin", "*");
-                    serverWebExchange.getResponse().getHeaders().set("Access-Control-Request-Methods", "POST, GET, DELETE, PUT, PATCH");
-                    return serverWebExchange;
-                })
-                .then();
-    }
 
     /**
      * Boot up!
