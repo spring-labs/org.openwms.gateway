@@ -65,7 +65,7 @@
     <properties>
         <cache-caffeine.version>15.0.0</cache-caffeine.version>
         <checker-qual.version>3.7.0</checker-qual.version>
-        <guava.version>30.0-android</guava.version>
+        <guava.version>30.0-jre</guava.version>
         <micrometer-registry-prometheus.version>1.6.0</micrometer-registry-prometheus.version>
         <reactor-netty.version>1.0.0</reactor-netty.version>
         <servo-core.version>0.12.21</servo-core.version>
@@ -116,13 +116,6 @@
                 <groupId>com.netflix.servo</groupId>
                 <artifactId>servo-core</artifactId>
                 <version>${servo-core.version}</version>
-                <exclusions>
-                    <exclusion>
-                        <!-- Several versions of Guava used internally, exclude all -->
-                        <groupId>com.google.guava</groupId>
-                        <artifactId>guava</artifactId>
-                    </exclusion>
-                </exclusions>
             </dependency>
             <dependency>
                 <groupId>io.micrometer</groupId>
