@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.openwms</groupId>
         <artifactId>org.openwms.parent</artifactId>
-        <version>19</version>
+        <version>19.1</version>
         <relativePath />
     </parent>
     <artifactId>org.openwms.gateway</artifactId>
@@ -50,8 +50,8 @@
     </developers>
 
     <ciManagement>
-        <system>travis</system>
-        <url>https://travis-ci.com/spring-labs/${project.artifactId}</url>
+        <system>GitHub</system>
+        <url>https://github.com/spring-labs/${project.artifactId}/actions</url>
         <notifiers>
             <notifier>
                 <type>mail</type>
