@@ -19,6 +19,6 @@ jobs:
           java-version: 11
       - name: Build
         run: >
-          ./mvnw clean verify
+          ./mvnw clean install
           -Dci.buildNumber=$GITHUB_RUN_NUMBER
           -U -B $MAVEN_OPTS
