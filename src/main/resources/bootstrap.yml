@@ -40,10 +40,6 @@ spring:
       name: user
       password: sa
 
-info:
-  scm-url: "@scm.url@"
-  build-url: "https://github.com/spring-labs/@project.artifactId@/actions"
-
 owms:
   eureka:
     url: http://user:sa@localhost:8761
@@ -73,6 +69,15 @@ eureka:
     secure-port-enabled: false
     prefer-ip-address: true
 
+info:
+  scm-url: "@scm.url@"
+  build-url: "https://github.com/spring-labs/@project.artifactId@/actions"
+
+logging:
+  file:
+    name: BOOT-Edge-Service.log
+    path: "/tmp/owms"
+
 management:
   endpoints:
     web:
@@ -90,11 +95,6 @@ management:
         request:
           autotime:
             enabled: true
-
-logging:
-  file:
-    name: BOOT-Edge-Service.log
-    path: "/tmp/owms"
 
 ---
 spring:
