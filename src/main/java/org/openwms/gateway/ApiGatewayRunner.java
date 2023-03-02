@@ -23,7 +23,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  *
  * @author Heiko Scherrer
  */
-@SpringBootApplication()
+@SpringBootApplication
 public class ApiGatewayRunner {
 
     /**

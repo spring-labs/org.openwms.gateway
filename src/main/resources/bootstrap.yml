@@ -93,6 +93,9 @@ management:
         request:
           autotime:
             enabled: true
+    export:
+      prometheus:
+        enabled: true
   info:
     git:
       mode: simple
