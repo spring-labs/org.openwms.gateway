@@ -1,5 +1,0 @@
-eureka:
-  client:
-    healthcheck:
-      enabled: true
-    instance-info-replication-interval-seconds: 10 # default is 30
