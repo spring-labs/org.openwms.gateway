@@ -127,7 +127,7 @@
                 <version>${guava.version}</version>
             </dependency>
             <dependency>
-                <!-- com.netflix.eureka:eureka-client has an internal clash -->
+                <!-- Clash in org.springframework.cloud:spring-cloud-starter-stream-rabbit -->
                 <groupId>com.netflix.servo</groupId>
                 <artifactId>servo-core</artifactId>
                 <version>${servo-core.version}</version>
