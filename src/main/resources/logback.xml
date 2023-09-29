@@ -26,8 +26,7 @@
 
     <logger name="CORE_INTEGRATION_MESSAGING" level="INFO"/>
 
-    <springProfile name="PROD">
-
+    <springProfile name="ELK">
         <appender name="ELK" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
             <destination>elk:5000</destination>
             <encoder class="net.logstash.logback.encoder.LogstashEncoder"/>
@@ -39,10 +38,11 @@
         <logger name="CALLCONTEXT" level="OFF"/>
         <logger name="MEASURED" level="INFO"/>
         <root level="INFO">
+            <appender-ref ref="STDOUT"/>
             <appender-ref ref="ELK"/>
         </root>
     </springProfile>
-    <springProfile name="!PROD">
+    <springProfile name="!ELK">
     <logger name="PRESENTATION_LAYER_EXCEPTION" level="ERROR" additivity="false">
         <appender-ref ref="STDOUT"/>
         <appender-ref ref="EXCFILE"/>
