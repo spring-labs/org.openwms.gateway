@@ -13,8 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.openwms.gateway;
+package org.openwms.gateway.app;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
@@ -28,43 +29,47 @@ import org.springframework.web.reactive.config.WebFluxConfigurer;
 import java.net.URI;
 
 /**
- * A CORSConfig.
+ * A ApiGatewaySecurityConfiguration.
  *
  * @author Heiko Scherrer
  */
 @Configuration
 @EnableWebFluxSecurity
-public class CORSConfig implements WebFluxConfigurer {
+class ApiGatewaySecurityConfiguration implements WebFluxConfigurer {
+
+    @Value("${owms.security.basic-auth}")
+    private boolean basicAuthEnabled;
+    @Value("${owms.security.logout-success-url}")
+    private String logoutSuccessUrl;
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
                 .allowedMethods("POST, GET, DELETE, PUT, PATCH")
-                .allowCredentials(true)
                 .allowedOrigins("*");
     }
 
     @Bean
     public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
-        return http
+        http
                 .authorizeExchange()
                 .pathMatchers("/actuator/**").permitAll()
                 .anyExchange().authenticated()
-                .and()
-                //.oauth2Login()
-                //.and()
+                    .and()
+                .csrf().disable()
                 .logout()
-                    .logoutUrl("/logout")
-                    .logoutSuccessHandler(logoutSuccessHandler("/ui/index.html"))
-                .and()
-                .csrf()
-                    .disable()
-                .build();
+                .logoutUrl("/logout")
+                .logoutSuccessHandler(logoutSuccessHandler(logoutSuccessUrl))
+                ;
+        if (basicAuthEnabled) {
+            http.httpBasic();
+        }
+        return http.build();
     }
 
     public ServerLogoutSuccessHandler logoutSuccessHandler(String uri) {
         //        OidcClientInitiatedServerLogoutSuccessHandler successHandler = new OidcClientInitiatedServerLogoutSuccessHandler();
-        RedirectServerLogoutSuccessHandler successHandler = new RedirectServerLogoutSuccessHandler();
+        var successHandler = new RedirectServerLogoutSuccessHandler();
         successHandler.setLogoutSuccessUrl(URI.create(uri));
         return successHandler;
     }
