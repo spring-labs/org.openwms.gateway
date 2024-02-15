@@ -1,7 +1,9 @@
 # OpenWMS.org API Gateway
-An API Gateway that serves as a central entry point into the whole microservice network and takes care about security and routing.
-
-![Build status][ci-image]
+The OpenWMS.org API Gateway serves as a central entry point to the OpenWMS.org microservice network and takes care about security and
+routing. It is build on top of [Spring Cloud Gateway](https://spring.io/projects/spring-cloud-gateway/) and is configured and customized in
+a way to work well in the distributed OpenWMS.org microservice environment. In addition to the opensource version there is the OpenWMS.org
+API Gateway ENTERPRISE edition that is extended with features to support [OAuth2.0](https://datatracker.ietf.org/doc/html/rfc6749) and
+[OpenID Connect](https://openid.net/developers/how-connect-works/) authorization and authentication at the edge.
 
 # Build and Run locally
 ```
