@@ -2,37 +2,52 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>org.openwms</groupId>
-        <artifactId>org.openwms.parent</artifactId>
-        <version>25</version>
+        <groupId>io.openleap</groupId>
+        <artifactId>io.openleap.parent</artifactId>
+        <version>47</version>
         <relativePath />
     </parent>
-    <artifactId>org.openwms.gateway</artifactId>
-    <version>2.1.0-SNAPSHOT</version>
-    <name>OpenWMS.org CORE: Gateway</name>
+    <artifactId>io.openleap.gateway</artifactId>
+    <version>1.0.7-SNAPSHOT</version>
+    <name>OpenLeap.io CORE: Gateway</name>
     <description>An API Gateway that serves as a central entry point into the whole microservice network</description>
-    <url>https://github.com/spring-labs/${project.artifactId}</url>
+    <url>https://github.com/openleap-io/${project.artifactId}</url>
 
     <issueManagement>
         <system>GitHub</system>
-        <url>https://github.com/spring-labs/${project.artifactId}/issues</url>
+        <url>https://github.com/openleap-io/${project.artifactId}/issues</url>
     </issueManagement>
 
     <distributionManagement>
         <site>
             <id>site</id>
-            <url>scm:git:git@github.com:spring-labs/${project.artifactId}.git</url>
+            <url>scm:git:git@github.com:openleap-io/${project.artifactId}.git</url>
         </site>
     </distributionManagement>
 
     <scm>
-        <url>https://github.com/spring-labs/${project.artifactId}</url>
-        <connection>scm:git:https://${scmuser}github.com/spring-labs/${project.artifactId}.git</connection>
-        <developerConnection>scm:git:https://${scmuser}github.com/spring-labs/${project.artifactId}.git</developerConnection>
+        <url>https://github.com/openleap-io/${project.artifactId}</url>
+        <connection>scm:git:https://${scmuser}github.com/openleap-io/${project.artifactId}.git</connection>
+        <developerConnection>scm:git:https://${scmuser}github.com/openleap-io/${project.artifactId}.git</developerConnection>
         <tag>HEAD</tag>
   </scm>
 
     <developers>
+        <developer>
+            <id>openleap.io</id>
+            <name>Soeren Kemmann</name>
+            <email>kemmann@openleap.io</email>
+            <url>https://github.com/openleap-io</url>
+            <organization>B+B Unternehmensberatung</organization>
+            <organizationUrl>https://www.bb-online.de</organizationUrl>
+            <timezone>+2</timezone>
+            <roles>
+                <role>Project Lead</role>
+                <role>Architect</role>
+                <role>Developer</role>
+                <role>Deployer</role>
+            </roles>
+        </developer>
         <developer>
             <id>scherrer</id>
             <name>Heiko Scherrer</name>
@@ -52,7 +67,7 @@
 
     <ciManagement>
         <system>GitHub</system>
-        <url>https://github.com/spring-labs/${project.artifactId}/actions</url>
+        <url>https://github.com/openleap-io/${project.artifactId}/actions</url>
         <notifiers>
             <notifier>
                 <type>mail</type>
@@ -64,9 +79,7 @@
     </ciManagement>
 
     <properties>
-        <guava.version>32.0.0-jre</guava.version>
-        <servo-core.version>0.12.21</servo-core.version>
-        <spring-cloud-dependencies.version>2021.0.8</spring-cloud-dependencies.version>
+
     </properties>
 
     <reporting>
@@ -90,7 +103,7 @@
     </reporting>
 
     <build>
-        <finalName>openwms-gateway</finalName>
+        <finalName>openleap-gateway</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
@@ -293,8 +306,8 @@
         <profile>
             <id>release-project</id>
             <properties>
-                <developerConnectionUrl>scm:git:https://openwms@github.com/spring-labs/${project.artifactId}.git</developerConnectionUrl>
-                <scmpublish.pubScmUrl>scm:git:https://openwms@github.com/spring-labs/${project.artifactId}.git</scmpublish.pubScmUrl>
+                <developerConnectionUrl>scm:git:https://openleapio@github.com/openleap-io/${project.artifactId}.git</developerConnectionUrl>
+                <scmpublish.pubScmUrl>scm:git:https://openleapio@github.com/openleap-io/${project.artifactId}.git</scmpublish.pubScmUrl>
             </properties>
         </profile>
     </profiles>

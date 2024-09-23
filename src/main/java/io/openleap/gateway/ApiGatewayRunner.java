@@ -13,24 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.openwms.gateway.app;
+package io.openleap.gateway;
 
-import io.micrometer.core.instrument.MeterRegistry;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.actuate.autoconfigure.metrics.MeterRegistryCustomizer;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
- * A ApiGatewayModuleConfiguration.
+ * A ApiGatewayRunner.
  *
  * @author Heiko Scherrer
  */
-@Configuration
-class ApiGatewayModuleConfiguration {
+@SpringBootApplication
+public class ApiGatewayRunner {
 
-    @Bean
-    MeterRegistryCustomizer<MeterRegistry> metricsCommonTags(@Value("${spring.application.name}") String applicationName) {
-        return registry -> registry.config().commonTags("application", applicationName);
+    /**
+     * Boot up!
+     *
+     * @param args Some args
+     */
+    public static void main(String[] args) {
+        SpringApplication.run(ApiGatewayRunner.class, args);
     }
 }

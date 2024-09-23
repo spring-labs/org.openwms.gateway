@@ -14,6 +14,6 @@
  * limitations under the License.
  */
 /**
- * Contains Spring configuration files and other lifecycle relevant types.
+ * Contains the implementation of the microservice.
  */
-package org.openwms.gateway.app;
+package io.openleap.gateway;

@@ -13,25 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.openwms.gateway;
-
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-
 /**
- * A ApiGatewayRunner.
- *
- * @author Heiko Scherrer
+ * Contains Spring configuration files and other lifecycle relevant types.
  */
-@SpringBootApplication
-public class ApiGatewayRunner {
-
-    /**
-     * Boot up!
-     *
-     * @param args Some args
-     */
-    public static void main(String[] args) {
-        SpringApplication.run(ApiGatewayRunner.class, args);
-    }
-}
+package io.openleap.gateway.app;

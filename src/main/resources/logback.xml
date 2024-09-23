@@ -5,7 +5,7 @@
 
     <variable scope="context" name="mdcPattern" value="%replace(;%X{MSGKEY};%X{MSGDATA}){';+( |$)', ''}" />
 
-    <property name="LOG_TEMP" value="/tmp/owms" />
+    <property name="LOG_TEMP" value="/tmp/oleap" />
     <property name="MODULE_NAME" value="CORE-Gateway" />
     <property name="SERVICE_NAME" value="GATEWAY" />
 

@@ -9,7 +9,7 @@ spring:
     config:
       discovery:
         enabled: true
-        service-id: openwms-config
+        service-id: openleap-config
       enabled: true
       fail-fast: true # true means retry
     discovery:
@@ -17,7 +17,7 @@ spring:
 
 eureka:
   instance:
-    statusPageUrl: ${owms.srv.protocol}://${owms.srv.hostname}:${server.port}/actuator/info
-    healthCheckUrl: ${owms.srv.protocol}://${owms.srv.hostname}:${server.port}/actuator/health
-    homePageUrl: ${owms.srv.protocol}://${owms.srv.hostname}:${server.port}/
+    statusPageUrl: ${oleap.srv.protocol}://${oleap.srv.hostname}:${server.port}/actuator/info
+    healthCheckUrl: ${oleap.srv.protocol}://${oleap.srv.hostname}:${server.port}/actuator/health
+    homePageUrl: ${oleap.srv.protocol}://${oleap.srv.hostname}:${server.port}/
 

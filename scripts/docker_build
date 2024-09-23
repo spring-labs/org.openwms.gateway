@@ -1,2 +1,2 @@
 #!/bin/bash
-docker build -t interface21/openwms-gateway:latest .
+docker build -t openleap/openleap-gateway:latest .
