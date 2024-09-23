@@ -37,9 +37,9 @@ import java.net.URI;
 @EnableWebFluxSecurity
 class ApiGatewaySecurityConfiguration implements WebFluxConfigurer {
 
-    @Value("${owms.security.basic-auth}")
+    @Value("${oleap.security.basic-auth}")
     private boolean basicAuthEnabled;
-    @Value("${owms.security.logout-success-url}")
+    @Value("${oleap.security.logout-success-url}")
     private String logoutSuccessUrl;
 
     @Override
