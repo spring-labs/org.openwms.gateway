@@ -18,6 +18,7 @@ package io.openleap.gateway.app;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.web.server.SecurityWebFilterChain;
@@ -37,9 +38,9 @@ import java.net.URI;
 @EnableWebFluxSecurity
 class ApiGatewaySecurityConfiguration implements WebFluxConfigurer {
 
-    @Value("${owms.security.basic-auth}")
+    @Value("${oleap.security.basic-auth}")
     private boolean basicAuthEnabled;
-    @Value("${owms.security.logout-success-url}")
+    @Value("${oleap.security.logout-success-url}")
     private String logoutSuccessUrl;
 
     @Override
@@ -51,18 +52,24 @@ class ApiGatewaySecurityConfiguration implements WebFluxConfigurer {
 
     @Bean
     public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
-        http
-                .authorizeExchange()
-                .pathMatchers("/actuator/**").permitAll()
-                .anyExchange().authenticated()
-                    .and()
-                .csrf().disable()
-                .logout()
-                .logoutUrl("/logout")
-                .logoutSuccessHandler(logoutSuccessHandler(logoutSuccessUrl))
-                ;
+        http.csrf(ServerHttpSecurity.CsrfSpec::disable)
+                .oauth2Login(Customizer.withDefaults())
+                .authorizeExchange( auth -> auth.pathMatchers("/actuator/**").permitAll());
+
+
+
+//        http
+//                .authorizeExchange()
+//                .pathMatchers("/actuator/**").permitAll()
+//                .anyExchange().authenticated()
+//                    .and()
+//                .csrf().disable()
+//                .logout()
+//                .logoutUrl("/logout")
+//                .logoutSuccessHandler(logoutSuccessHandler(logoutSuccessUrl))
+//                ;
         if (basicAuthEnabled) {
-            http.httpBasic();
+            http.httpBasic(Customizer.withDefaults());
         }
         return http.build();
     }
