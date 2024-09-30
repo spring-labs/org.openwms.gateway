@@ -16,7 +16,7 @@ oleap:
     url: http://user:sa@localhost:8761
     zone: ${oleap.eureka.url}/eureka/
   security:
-    basic-auth: false
+    basic-auth: true
     logout-success-url: "https://localhost:8086/login?logout"
   srv:
     hostname: localhost
