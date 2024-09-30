@@ -53,7 +53,7 @@ class ApiGatewaySecurityConfiguration implements WebFluxConfigurer {
     @Bean
     public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
         http.csrf(ServerHttpSecurity.CsrfSpec::disable)
-                .oauth2Login(Customizer.withDefaults())
+                .formLogin(Customizer.withDefaults())
                 .authorizeExchange( auth -> auth.pathMatchers("/actuator/**").permitAll());
 
 
