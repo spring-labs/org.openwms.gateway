@@ -20,4 +20,6 @@ eureka:
     statusPageUrl: ${oleap.srv.protocol}://${oleap.srv.hostname}:${server.port}/actuator/info
     healthCheckUrl: ${oleap.srv.protocol}://${oleap.srv.hostname}:${server.port}/actuator/health
     homePageUrl: ${oleap.srv.protocol}://${oleap.srv.hostname}:${server.port}/
+    preferIpAddress: true
+
 

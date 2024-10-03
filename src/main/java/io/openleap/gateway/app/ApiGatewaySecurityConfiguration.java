@@ -16,8 +16,10 @@
 package io.openleap.gateway.app;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
@@ -51,28 +53,35 @@ class ApiGatewaySecurityConfiguration implements WebFluxConfigurer {
     }
 
     @Bean
-    public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
+    @Profile("!BasicAuth & !oauth2")
+    public SecurityWebFilterChain springNoAuthSecurityFilterChain(ServerHttpSecurity http) {
+        http.csrf(ServerHttpSecurity.CsrfSpec::disable)
+                .authorizeExchange( auth -> auth.anyExchange().permitAll());
+        return http.build();
+    }
+
+    @Bean
+    @Profile("BasicAuth")
+    public SecurityWebFilterChain springBasicAuthSecurityFilterChain(ServerHttpSecurity http) {
         http.csrf(ServerHttpSecurity.CsrfSpec::disable)
                 .formLogin(Customizer.withDefaults())
                 .authorizeExchange( auth -> auth.pathMatchers("/actuator/**").permitAll()
                         .anyExchange().authenticated());
 
-
-
-
-//        http
-//                .authorizeExchange()
-//                .pathMatchers("/actuator/**").permitAll()
-//                .anyExchange().authenticated()
-//                    .and()
-//                .csrf().disable()
-//                .logout()
-//                .logoutUrl("/logout")
-//                .logoutSuccessHandler(logoutSuccessHandler(logoutSuccessUrl))
-//                ;
-        if (basicAuthEnabled) {
+//        if (basicAuthEnabled) {
             http.httpBasic(Customizer.withDefaults());
-        }
+//        }
+        return http.build();
+    }
+
+    @Bean
+    @Profile("oauth2")
+    public SecurityWebFilterChain springIDPSecurityFilterChain(ServerHttpSecurity http) {
+        http.csrf(ServerHttpSecurity.CsrfSpec::disable)
+                .oauth2Login(Customizer.withDefaults())
+                .oauth2ResourceServer((oauth2) -> oauth2.jwt(Customizer.withDefaults()))
+                .authorizeExchange( auth -> auth.pathMatchers("/actuator/**").permitAll()
+                        .anyExchange().authenticated());
         return http.build();
     }
 

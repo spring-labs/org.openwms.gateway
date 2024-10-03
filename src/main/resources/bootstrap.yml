@@ -3,23 +3,20 @@ spring:
     name: openleap-gateway
   config:
     location: classpath:application.yml
-  security:
-    user:
-      name: user
-      password: sa
+
   zipkin:
     sender:
       type: web
 
 oleap:
   eureka:
-    url: http://user:sa@localhost:8761
+    url: http://user:sa@172.27.90.61:8761
     zone: ${oleap.eureka.url}/eureka/
   security:
     basic-auth: true
     logout-success-url: "https://localhost:8086/login?logout"
   srv:
-    hostname: localhost
+    hostname: 172.27.90.61
     protocol: http
   tenant: master
 
