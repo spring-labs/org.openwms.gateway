@@ -1,5 +1,5 @@
 /*
- * Copyright 2005-2023 the original author or authors.
+ * Copyright 2005-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,6 +15,8 @@
  */
 package org.openwms.gateway.app;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -28,6 +30,8 @@ import org.springframework.web.reactive.config.WebFluxConfigurer;
 
 import java.net.URI;
 
+import static org.ameba.LoggingCategories.BOOT;
+
 /**
  * A ApiGatewaySecurityConfiguration.
  *
@@ -37,6 +41,7 @@ import java.net.URI;
 @EnableWebFluxSecurity
 class ApiGatewaySecurityConfiguration implements WebFluxConfigurer {
 
+    private static final Logger BOOT_LOGGER = LoggerFactory.getLogger(BOOT);
     @Value("${owms.security.basic-auth}")
     private boolean basicAuthEnabled;
     @Value("${owms.security.logout-success-url}")
@@ -51,19 +56,29 @@ class ApiGatewaySecurityConfiguration implements WebFluxConfigurer {
 
     @Bean
     public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
+        if (basicAuthEnabled) {
+            BOOT_LOGGER.info("BASIC authentication is enabled");
+            http
+                    .authorizeExchange()
+                    .pathMatchers("/actuator/**").permitAll()
+                    .anyExchange().authenticated()
+            ;
+            http.httpBasic();
+        } else {
+            BOOT_LOGGER.info("BASIC authentication is disabled");
+            http
+                    .authorizeExchange()
+                    .pathMatchers("/**").permitAll()
+                    .anyExchange().authenticated()
+            ;
+            http.httpBasic().disable();
+        }
         http
-                .authorizeExchange()
-                .pathMatchers("/actuator/**").permitAll()
-                .anyExchange().authenticated()
-                    .and()
                 .csrf().disable()
                 .logout()
                 .logoutUrl("/logout")
                 .logoutSuccessHandler(logoutSuccessHandler(logoutSuccessUrl))
-                ;
-        if (basicAuthEnabled) {
-            http.httpBasic();
-        }
+        ;
         return http.build();
     }
 
