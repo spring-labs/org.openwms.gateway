@@ -1,1 +1,1 @@
-packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"org.openwms.gateway"}];updateSearchResults();
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"org.openwms.gateway"},{"l":"org.openwms.gateway.app"}];updateSearchResults();
