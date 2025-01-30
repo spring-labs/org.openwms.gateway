@@ -4,21 +4,31 @@ server:
 spring:
   application:
     name: openleap-gateway
+  cloud:
+    gateway:
+      default-filters:
+        - TokenRelay=
+      routes:
+        - id: report-service
+          uri: lb://report-service
+          predicates:
+            - Path=/reports/**
   security:
     oauth2:
       client:
         registration:
           gateway-client:
             provider: spring
-            client-id: yV1lAZSxBRBOkX5_bvRyvt2gNJV274gGyGQPa33tixI
-            client-secret: oIHMTK71F9XEiL4JwDwLG0a2omCWf83lpa8ruyCzMFMKubVgqgivNVdrJFZiyg0V
+            client-id: generated
+            client-secret: generated
             authorization-grant-type: authorization_code
-            redirect-uri: "http://127.0.0.1:8086/login/oauth2/code/{registrationId}"
-            scope: openid, profile
+            redirect-uri: 'http://127.0.0.1:8086/login/oauth2/code/{registrationId}'
+            scope: openid, profile, report-service
             client-name: gateway-client
         provider:
           spring:
             issuer-uri: http://auth-server:8899
+            token-uri: http://auth-server:8899/oauth2/token
         resourceserver:
           jwt:
             jwk-set-uri: http://auth-server:8899/oauth2/jwks
@@ -29,6 +39,17 @@ oleap:
   srv:
     hostname: localhost
     protocol: http
+  client:
+    registration:
+      instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+      registration-endpoint: http://auth-server:8899/connect/register
+      unregistration-endpoint: http://auth-server:8899/internal/client/unregister
+      registration-username: register-client
+      registration-password: secret
+      token-endpoint: http://auth-server:8899/oauth2/token
+      registration-scopes: client.create
+      grant-types: client_credentials
+      base-url: http://127.0.0.1:8086
 
 eureka:
   client:
@@ -66,3 +87,9 @@ management:
     web:
       exposure:
         include: "*"
+logging:
+  level:
+    root: INFO
+#    org.springframework.web: INFO
+#    org.springframework.security: TRACE
+#    org.springframework.security.oauth2: TRACE
