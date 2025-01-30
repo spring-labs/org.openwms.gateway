@@ -27,9 +27,9 @@ spring:
     user:
       name: user
       password: sa
-  zipkin:
-    sender:
-      type: web
+  output:
+    ansi:
+      enabled: always
 
 owms:
   eureka:
@@ -42,6 +42,8 @@ owms:
     hostname: localhost
     protocol: http
   tenant: master
+  tracing:
+    url: http://localhost:4317
 
 server:
   port: ${PORT:8086}
@@ -49,6 +51,7 @@ server:
 eureka:
   client:
     instance-info-replication-interval-seconds: 10 # default is 30
+    registryFetchIntervalSeconds: 5 # SBA
     service-url:
       defaultZone: ${owms.eureka.zone} # Must be camelCase
   instance:
@@ -63,11 +66,16 @@ eureka:
     # Default: 30s
     lease-renewal-interval-in-seconds: 2
     metadata-map:
+      group: CORE
       config-protocol: http # The protocol used to access the config server
       username: ${spring.security.user.name}
       password: ${spring.security.user.password}
       protocol: ${owms.srv.protocol}
+      startup: ${random.int} # SBA
       zone: ${owms.eureka.zone}
+      prometheus.scrape: "true"
+      prometheus.path: "/actuator/prometheus"
+      prometheus.port: ${server.port}
     non-secure-port-enabled: true
     prefer-ip-address: true
     secure-port-enabled: false
@@ -92,18 +100,28 @@ management:
   health:
     rabbit:
       enabled: false
-  metrics:
-    web:
-      server:
-        request:
-          autotime:
-            enabled: true
-    export:
-      prometheus:
-        enabled: true
   info:
     git:
       mode: simple
+  metrics:
+    distribution:
+      percentiles-histogram:
+        greeting: true
+        http:
+          server:
+            requests: true
+    tags:
+      application: ${spring.application.name}
+  otlp:
+    tracing:
+      endpoint: ${owms.tracing.url}
+  prometheus:
+    metrics:
+      export:
+        enabled: true
+  tracing:
+    sampling:
+      probability: 1.0
 
 ---
 spring:

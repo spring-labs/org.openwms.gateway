@@ -1,17 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>org.openwms</groupId>
         <artifactId>org.openwms.parent</artifactId>
-        <version>27</version>
-        <relativePath />
+        <version>27.1</version>
+        <relativePath/>
     </parent>
     <artifactId>org.openwms.gateway</artifactId>
     <version>2.1.0-SNAPSHOT</version>
     <name>OpenWMS.org CORE: Gateway</name>
     <description>An API Gateway that serves as a central entry point into the whole microservice network</description>
-    <url>https://github.com/spring-labs/${project.artifactId}</url>
+    <url>https://spring-labs.github.io/${project.artifactId}/index.html</url>
 
     <issueManagement>
         <system>GitHub</system>
@@ -171,9 +173,21 @@
 
         <!-- Observability: Monitoring -->
         <dependency>
+            <groupId>io.github.openfeign</groupId>
+            <artifactId>feign-micrometer</artifactId>
+        </dependency>
+        <dependency>
             <groupId>io.micrometer</groupId>
             <artifactId>micrometer-registry-prometheus</artifactId>
             <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.micrometer</groupId>
+            <artifactId>micrometer-tracing-bridge-otel</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.opentelemetry</groupId>
+            <artifactId>opentelemetry-exporter-otlp</artifactId>
         </dependency>
 
         <!-- 3rd party dependencies -->
